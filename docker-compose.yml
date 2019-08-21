@@ -1,0 +1,15 @@
+version: '3.6'
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+  brooklin:
+    image: dongjinleekr/brooklin
+    ports:
+      - "32311:32311"
+    environment:
+      BROOKLIN_CLUSTER_NAME: brooklin-quickstart
+      BROOKLIN_ZOOKEEPER_CONNECT: zookeeper:2181
+      BROOKLIN_HTTP_PORT: 32311
+
