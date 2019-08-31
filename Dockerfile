@@ -2,7 +2,7 @@ FROM openjdk:8u212-jre-alpine
 
 ARG brooklin_version=1.0.0
 
-LABEL maintainer="dongjinleekr"
+LABEL maintainer="Lee Dongjin <dongjin@apache.org>"
 
 ENV BROOKLIN_VERSION=$brooklin_version \
     BROOKLIN_HOME=/opt/brooklin \
