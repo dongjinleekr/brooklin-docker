@@ -38,9 +38,23 @@ You can customize your docker containers by setting the following environment va
 - `BROOKLIN_ZOOKEEPER_CONNECT`: Connection string to the backing zookeeper ensemble. (Required)
 - `BROOKLIN_HTTP_PORT`: HTTP port for administration. (32311 by default)
 
+As of 1.0.0-2, the name of the connectors and transport providers are fixed and only some of their are configurable:
+
+| Category | Class | Name | Options |
+|:-----------------:|:-----------------------------:|:---------------:|--------------------------------------------------------------------------------|
+| Connector | `TestEventProducingConnector` | testC |  |
+| Connector | `FileConnector` | fileC |  |
+| Connector | `DirectoryConnector` | dirC |  |
+| Connector | `KafkaConnector` | kafkaC |  |
+| Connector | `KafkaMirrorMakerConnector` | kafkaMirroringC |  |
+| TransportProvider | `DirectoryTransportProvider` | dirTP |  |
+|  |  |  | - `KAFKA_TP_BOOTSTRAP_SERVERS`: Bootstrap servers to the target kafka cluster. (default: `localhost:9092`) |
+| TransportProvider | `KafkaTransportProvider` | kafkaTP | - `KAFKA_TP_ZOOKEEPER_CONNECT`: Connection string to the target kafka cluster's Zookeeper cluster. (default: `localhost:2181`) |
+|  |  |  | - `KAFKA_TP_BOOTSTRAP_SERVERS`: - `KAFKA_TP_CLIENT_ID`: Kafka client id to produce messages. (default: `datastream-producer`) |
+
 # Versions
 
-This project follows the following versioning scheme: `{brooklin-version}-{image-version}`. For example, `1.0.0-2` means the 3rd release of brooklin `1.0.0`.
+This project follows the following versioning scheme: `{brooklin-version}-{image-version}`. For example, `1.0.0-2` means the 2nd release of brooklin `1.0.0`.
 
 # License
 

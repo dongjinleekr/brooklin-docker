@@ -3,16 +3,46 @@
 brooklin.server.coordinator.cluster=brooklin-cluster
 brooklin.server.coordinator.zkAddress=localhost:2181
 brooklin.server.httpPort=32311
-brooklin.server.connectorNames=dirC
-brooklin.server.transportProviderNames=dirTP
+brooklin.server.connectorNames=testC,fileC,dirC,kafkaC,kafkaMirroringC
+brooklin.server.transportProviderNames=dirTP,kafkaTP
 brooklin.server.csvMetricsDir=/tmp/brooklin-example/
 
-########################### Directory transport provider configs ######################
+########################### Test event producing connector Configs ######################
 
-brooklin.server.transportProvider.dirTP.factoryClassName=com.linkedin.datastream.server.DirectoryTransportProviderAdminFactory
+brooklin.server.connector.testC.factoryClassName=com.linkedin.datastream.connectors.TestEventProducingConnectorFactory
+brooklin.server.connector.testC.assignmentStrategyFactory=com.linkedin.datastream.server.assignment.LoadbalancingStrategyFactory
+brooklin.server.connector.testC.strategy.TasksPerDatastream = 4
+
+########################### File connector Configs ######################
+
+brooklin.server.connector.fileC.factoryClassName=com.linkedin.datastream.connectors.file.FileConnectorFactory
+brooklin.server.connector.fileC.assignmentStrategyFactory=com.linkedin.datastream.server.assignment.BroadcastStrategyFactory
+brooklin.server.connector.fileC.strategy.maxTasks=1
 
 ########################### Directory connector Configs ######################
 
 brooklin.server.connector.dirC.factoryClassName=com.linkedin.datastream.connectors.directory.DirectoryConnectorFactory
 brooklin.server.connector.dirC.assignmentStrategyFactory=com.linkedin.datastream.server.assignment.BroadcastStrategyFactory
 brooklin.server.connector.dirC.strategy.maxTasks=1
+
+########################### Kafka connector Configs ######################
+
+brooklin.server.connector.kafkaC.factoryClassName=com.linkedin.datastream.connectors.kafka.KafkaConnectorFactory
+brooklin.server.connector.kafkaC.assignmentStrategyFactory=com.linkedin.datastream.server.assignment.BroadcastStrategyFactory
+
+########################### Kafka Mirroring connector Configs ######################
+
+brooklin.server.connector.kafkaMirroringC.factoryClassName=com.linkedin.datastream.connectors.kafka.mirrormaker.KafkaMirrorMakerConnectorFactory
+brooklin.server.connector.kafkaMirroringC.assignmentStrategyFactory=com.linkedin.datastream.server.assignment.BroadcastStrategyFactory
+
+########################### Directory transport provider configs ######################
+
+brooklin.server.transportProvider.dirTP.factoryClassName=com.linkedin.datastream.server.DirectoryTransportProviderAdminFactory
+
+########################### Kafka transport provider configs ######################
+
+brooklin.server.transportProvider.kafkaTP.factoryClassName=com.linkedin.datastream.kafka.KafkaTransportProviderAdminFactory
+brooklin.server.transportProvider.kafkaTP.bootstrap.servers=localhost:9092
+brooklin.server.transportProvider.kafkaTP.zookeeper.connect=localhost:2181
+brooklin.server.transportProvider.kafkaTP.client.id=datastream-producer
+
