@@ -10,17 +10,16 @@ This project is an brookin-equivalent of [kafka-docker](https://github.com/wurst
 
 # Quickstart
 
-The following `docker-compose.yml` shows how to start up a brooklin cluster, consists of 1 zookeeper and 1 brooklin container.
+The following `docker-compose.yml` shows how to start up a brooklin cluster, consists of 1 zookeeper and 1 brooklin container, with one source kafka cluster (`kafka-1`) and one destination kafka cluster (`kafka-2`).
 
 ```yml
 version: '3.6'
-
 services:
   zookeeper:
     image: wurstmeister/zookeeper:3.4.6
     ports:
       - "2181:2181"
-  brooklin:
+  brooklin-1:
     image: dongjinleekr/brooklin:latest
     ports:
       - "32311:32311"
@@ -28,6 +27,33 @@ services:
       BROOKLIN_CLUSTER_NAME: brooklin-quickstart
       BROOKLIN_ZOOKEEPER_CONNECT: zookeeper:2181
       BROOKLIN_HTTP_PORT: 32311
+      KAFKA_TP_BOOTSTRAP_SERVERS: kafka-2:9093
+      KAFKA_TP_ZOOKEEPER_CONNECT: kafka-zookeeper-2:2181
+      KAFKA_TP_CLIENT_ID: brooklin-producer-1
+  kafka-zookeeper-1:
+    image: wurstmeister/zookeeper:3.4.6
+  kafka-1:
+    image: wurstmeister/kafka:2.12-2.3.0
+    ports:
+      - "9092:9092"
+    environment:
+      HOSTNAME_COMMAND: "route -n | awk '/UG[ \t]/{print $$2}'"
+      KAFKA_LISTENERS: PLAINTEXT://:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://_{HOSTNAME_COMMAND}:9092
+      KAFKA_ZOOKEEPER_CONNECT: kafka-zookeeper-1:2181
+      KAFKA_CREATE_TOPICS: "first-topic:1:1,second-topic:1:1,third-topic:1:1"
+  kafka-zookeeper-2:
+    image: wurstmeister/zookeeper:3.4.6
+  kafka-2:
+    image: wurstmeister/kafka:2.12-2.3.0
+    ports:
+      - "9093:9093"
+    environment:
+      HOSTNAME_COMMAND: "route -n | awk '/UG[ \t]/{print $$2}'"
+      KAFKA_LISTENERS: PLAINTEXT://:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://_{HOSTNAME_COMMAND}:9093
+      KAFKA_ZOOKEEPER_CONNECT: kafka-zookeeper-2:2181
+      KAFKA_CREATE_TOPICS: "test:1:1"
 ```
 
 # Environment Variables
