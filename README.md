@@ -27,7 +27,7 @@ services:
       BROOKLIN_CLUSTER_NAME: brooklin-quickstart
       BROOKLIN_ZOOKEEPER_CONNECT: zookeeper:2181
       BROOKLIN_HTTP_PORT: 32311
-      KAFKA_TP_BOOTSTRAP_SERVERS: kafka-2:9093
+      KAFKA_TP_BOOTSTRAP_SERVERS: kafka-2:9092
       KAFKA_TP_ZOOKEEPER_CONNECT: kafka-zookeeper-2:2181
       KAFKA_TP_CLIENT_ID: brooklin-producer-1
   kafka-zookeeper-1:
@@ -47,13 +47,14 @@ services:
   kafka-2:
     image: wurstmeister/kafka:2.12-2.3.0
     ports:
-      - "9093:9093"
+      - "9093:9092"
     environment:
       HOSTNAME_COMMAND: "route -n | awk '/UG[ \t]/{print $$2}'"
-      KAFKA_LISTENERS: PLAINTEXT://:9093
+      KAFKA_LISTENERS: PLAINTEXT://:9092
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://_{HOSTNAME_COMMAND}:9093
       KAFKA_ZOOKEEPER_CONNECT: kafka-zookeeper-2:2181
       KAFKA_CREATE_TOPICS: "test:1:1"
+
 ```
 
 # Environment Variables
